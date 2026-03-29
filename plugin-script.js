@@ -1,41 +1,41 @@
-const BASE_URL = "https://api.consumet.org/anime/gogoanime";
+const BASE_URL = "https://api-aniwatch.onrender.com";
 
 async function search(query) {
-  const res = await fetch(`${BASE_URL}/${encodeURIComponent(query)}`);
+  const res = await fetch(`${BASE_URL}/anime/search?q=${encodeURIComponent(query)}&page=1`);
   const data = await res.json();
-  return data.results.map((item) => ({
+  return (data.animes || []).map((item) => ({
     id: item.id,
-    title: item.title,
-    image: item.image,
-    url: item.url,
+    title: item.name,
+    image: item.poster,
   }));
 }
 
 async function fetchInfo(id) {
-  const res = await fetch(`${BASE_URL}/info/${encodeURIComponent(id)}`);
+  const res = await fetch(`${BASE_URL}/anime/info?id=${encodeURIComponent(id)}`);
   const data = await res.json();
+  const info = data.anime?.info || {};
   return {
-    id: data.id,
-    title: data.title,
-    image: data.image,
-    description: data.description,
-    episodes: data.episodes,
+    id: info.id,
+    title: info.name,
+    image: info.poster,
+    description: info.description,
   };
 }
 
 async function fetchEpisodes(id) {
-  const info = await fetchInfo(id);
-  return info.episodes.map((ep) => ({
-    id: ep.id,
+  const res = await fetch(`${BASE_URL}/anime/episodes/${encodeURIComponent(id)}`);
+  const data = await res.json();
+  return (data.episodes || []).map((ep) => ({
+    id: ep.episodeId,
     number: ep.number,
-    url: ep.url,
+    title: ep.title,
   }));
 }
 
 async function fetchSources(id) {
-  const res = await fetch(`${BASE_URL}/watch/${encodeURIComponent(id)}`);
+  const res = await fetch(`${BASE_URL}/anime/episode-srcs?id=${encodeURIComponent(id)}&server=vidstreaming&category=sub`);
   const data = await res.json();
-  return data.sources.map((source) => ({
+  return (data.sources || []).map((source) => ({
     url: source.url,
     quality: source.quality,
     isM3U8: source.isM3U8,
