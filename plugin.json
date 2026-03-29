@@ -4,7 +4,7 @@
   "pluginType": "provider",
   "pluginProvider": "Standard",
   "contentProvider": "GogoAnime",
-  "scriptUrl": "https://YOUR_HOST/plugin-script.js",
+  "scriptUrl": "https://aydenbindra92-lang.github.io/mojuru-plugin/plugin-script.js",
   "iconUrl": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx1-CXtrrkMpJ8Zqg.jpg",
   "version": "1.0.0",
   "language": "English",
